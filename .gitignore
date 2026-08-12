@@ -16,3 +16,6 @@ Thumbs.db
 
 # Test data
 mock_data.json
+
+# Release artifacts
+*.zip

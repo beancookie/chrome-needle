@@ -12,10 +12,12 @@ A Chrome browser extension powered by [Needle 2](https://huggingface.co/Cactus-C
 
 ## Installation
 
+Download: [chrome-needle-v1.0.0.zip](https://github.com/beancookie/chrome-needle/releases/download/v1.0.0/chrome-needle-v1.0.0.zip)
+
 1. Open Chrome → `chrome://extensions/`
 2. Enable "Developer mode"
 3. Click "Load unpacked"
-4. Select the project root directory
+4. Select the unzipped project folder
 
 ## Usage Examples
 

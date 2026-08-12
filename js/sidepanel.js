@@ -212,6 +212,7 @@ async function sendMessage() {
     addMessage("translated", `${original} -> ${query}`);
   }
 
+  reset();
   try {
     await runAgentLoop(query);
   } catch (e) {

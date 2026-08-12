@@ -22,6 +22,7 @@ Download: [chrome-needle.zip](https://github.com/beancookie/chrome-needle/releas
 ## Usage Examples
 
 ![ChromeNeedle in action](images/demo1.png)
+![ChromeNeedle tools](images/demo2.png)
 
 **Basic navigation**
 ```

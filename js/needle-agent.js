@@ -1,5 +1,10 @@
 let Module = null;
 let modelReady = false;
+// The WASM engine keeps a reference to the weights buffer passed to
+// needle_load() for the lifetime of the session. It does NOT copy the bytes
+// like the native engine does, so freeing this pointer corrupts the model
+// (every completion degrades into an empty-call refusal). Keep it alive here.
+let weightsPtr = null;
 
 export function isReady() {
   return modelReady;
@@ -36,22 +41,33 @@ export async function loadModel(toolsJson, onProgress) {
     const cactBytes = new Uint8Array(await resp.arrayBuffer());
     console.log("[Needle] cact size:", (cactBytes.length / 1024 / 1024).toFixed(1), "MB");
 
-    const cactPtr = Module._malloc(cactBytes.length);
-    Module.HEAPU8.set(cactBytes, cactPtr);
-    const ret = Module._needle_load(cactPtr, BigInt(cactBytes.length));
-    Module._free(cactPtr);
+    weightsPtr = Module._malloc(cactBytes.length);
+    Module.HEAPU8.set(cactBytes, weightsPtr);
+    const ret = Module._needle_load(weightsPtr, BigInt(cactBytes.length));
     console.log("[Needle] needle_load returned:", ret);
     if (ret !== 0) throw new Error(`needle_load() returned ${ret}`);
     log("Weights loaded");
 
-    log("Step 3/4: Initializing tools...");
-    const sPtr = strToWasm("");
-    const tPtr = strToWasm(toolsJson);
-    const iPtr = 0;
-    const initRet = Module._needle_init(sPtr, tPtr, iPtr);
-    Module._free(sPtr); Module._free(tPtr);
-    console.log("[Needle] needle_init returned:", initRet);
-    if (initRet < 0) throw new Error(`needle_init() returned ${initRet}`);
+  const today = new Date();
+  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const dateStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")} ${days[today.getDay()]}`;
+  // Queries are translated to English before reaching the model (autoTranslate
+  // is on by default), so advertise locale: en-US. Other values (e.g. zh-CN)
+  // combined with an English query deterministically make the decoder ramble
+  // past the token budget ("tool call truncated: token budget exhausted").
+  const locale = "en-US";
+  const systemPrompt = `date: ${dateStr}; locale: ${locale}; device: browser (Chrome)`;
+
+  log("Step 3/4: Initializing tools...");
+  console.log("[Needle] tools JSON (first 500):", toolsJson.slice(0, 500));
+  console.log("[Needle] system prompt:", systemPrompt);
+  const sPtr = strToWasm(systemPrompt);
+  const tPtr = strToWasm(toolsJson);
+  const iPtr = 0;
+  const initRet = Module._needle_init(sPtr, tPtr, iPtr);
+  Module._free(sPtr); Module._free(tPtr);
+  console.log("[Needle] needle_init returned:", initRet);
+  if (initRet < 0) throw new Error(`needle_init() returned ${initRet}`);
     log("Tools initialized");
 
     modelReady = true;

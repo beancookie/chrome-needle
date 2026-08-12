@@ -1,23 +1,3 @@
-const TOOL_NAMES = [
-  "get_page_content",
-  "click_element",
-  "fill_form",
-  "scroll_page",
-  "open_tab",
-  "close_tab",
-  "switch_tab",
-  "list_tabs",
-  "add_bookmark",
-  "search_bookmarks",
-  "download_file",
-  "take_screenshot",
-  "notification",
-  "clipboard_read",
-  "clipboard_write",
-  "fetch_api",
-  "execute_script",
-];
-
 async function getActiveTab() {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   return tab;
@@ -132,8 +112,17 @@ async function handleMessage(msg) {
       return sendToContent(tab.id, "scroll", msg.params);
     }
     case "open_tab": {
-      const tab = await chrome.tabs.create({ url: msg.params.url, active: msg.params.active ?? true });
-      return { opened: true, tabId: tab.id, url: msg.params.url };
+      let url = String(msg.params.url ?? "").trim();
+      if (!/^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(url)) url = "https://" + url;
+      const tab = await chrome.tabs.create({ url, active: msg.params.active ?? true });
+      return { opened: true, tabId: tab.id, url };
+    }
+    case "search_web": {
+      const query = String(msg.params?.query ?? "").trim();
+      if (!query) return { error: "search query is required" };
+      const url = "https://www.google.com/search?q=" + encodeURIComponent(query);
+      const tab = await chrome.tabs.create({ url, active: true });
+      return { opened: true, tabId: tab.id, url, query };
     }
     case "close_tab": {
       if (msg.params.tabId) {
@@ -191,7 +180,7 @@ async function handleMessage(msg) {
       chrome.notifications.create({
         type: "basic",
         iconUrl: "icons/icon48.png",
-        title: msg.params.title ?? "Needle",
+        title: msg.params.title ?? "ChromeNeedle",
         message: msg.params.message ?? "",
       });
       return { notified: true };

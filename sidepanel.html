@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Needle 2 - AI Agent</title>
+  <title>ChromeNeedle - Local AI Browser Agent</title>
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
   <div class="app">
     <header class="app-header">
       <div class="header-left">
-        <span class="logo">Needle 2</span>
+        <span class="logo">Chrome<em>Needle</em></span>
         <span class="badge">45M</span>
         <span id="status-dot" class="status-dot offline" title="Model status"></span>
       </div>
@@ -24,7 +24,7 @@
     <!-- Loading Screen -->
     <div id="loading-screen" class="loading-screen">
       <div class="loading-spinner"></div>
-      <div id="loading-text">Initializing Needle 2...</div>
+      <div id="loading-text">Initializing ChromeNeedle...</div>
       <div id="loading-progress" class="loading-progress">
         <div id="loading-bar" class="loading-bar"></div>
       </div>
@@ -35,15 +35,19 @@
       <div id="chat-messages" class="chat-messages">
         <div class="welcome-msg">
           <div class="welcome-icon">N</div>
-          <h3>Needle 2 Agent</h3>
+          <h3>ChromeNeedle</h3>
           <p>45M params, runs locally in your browser. I can control your tabs, fill forms, run scripts, and more.</p>
           <div class="welcome-hints">
             <span class="hint" data-prompt="Go to google.com and search for AI news">"Go to google.com and search for AI news"</span>
             <span class="hint" data-prompt="Get the content of this page and summarize it">"Summarize this page"</span>
-            <span class="hint" data-prompt="告诉我当前页面内容是什么">"告诉我当前页面内容是什么"</span>
+            <span class="hint" data-prompt="Tell me what the current page content is">"Tell me the current page content"</span>
             <span class="hint" data-prompt="Open youtube.com in a new tab">"Open youtube.com in a new tab"</span>
           </div>
         </div>
+      </div>
+      <div id="chat-spinner" class="chat-spinner hidden">
+        <div class="chat-spinner-icon"></div>
+        <span>AI is thinking...</span>
       </div>
       <div class="chat-input-area">
         <textarea
@@ -52,7 +56,9 @@
           placeholder="Ask the agent to do something..."
           autofocus
         ></textarea>
-        <button id="btn-send" title="Send">Send</button>
+        <button id="btn-send" title="Send (Enter)" disabled>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 13V3M3.5 7.5L8 3l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
       </div>
     </div>
 
@@ -60,7 +66,7 @@
     <div id="panel-tools" class="panel hidden">
       <div id="tools-editor-container">
         <div id="builtin-tools-list" class="builtin-tools-list">
-          <h4>Built-in Tools (16)</h4>
+          <h4>Built-in Tools (<span id="builtin-tools-count">5</span>)</h4>
           <div id="builtin-tool-items"></div>
         </div>
         <div id="custom-tools-container"></div>

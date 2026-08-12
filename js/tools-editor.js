@@ -60,6 +60,8 @@ return { copied: true, length: text.length };`,
   },
 ];
 
+import { escapeHtml } from "./utils.js";
+
 export class ToolsEditor {
   constructor(containerId) {
     this.container = document.getElementById(containerId);
@@ -204,10 +206,4 @@ export class ToolsEditor {
       this.renderToolList();
     });
   }
-}
-
-function escapeHtml(text) {
-  const div = document.createElement("div");
-  div.textContent = text ?? "";
-  return div.innerHTML;
 }

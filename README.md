@@ -14,10 +14,19 @@ A Chrome browser extension powered by [Needle 2](https://huggingface.co/Cactus-C
 
 Download: [chrome-needle.zip](https://github.com/beancookie/chrome-needle/releases/latest/download/chrome-needle.zip)
 
-1. Open Chrome → `chrome://extensions/`
-2. Enable "Developer mode"
-3. Click "Load unpacked"
-4. Select the unzipped project folder
+There are two simple ways to install the extension in Chrome:
+
+- Drag & drop (quick):
+  1. Open Chrome and go to `chrome://extensions/`.
+  2. If necessary, enable "Developer mode" (toggle in the top-right).
+  3. Drag the downloaded `chrome-needle.zip` file onto the extensions page — Chrome will install the extension directly from the ZIP.
+
+- Load unpacked (development):
+  1. Open Chrome → `chrome://extensions/`
+  2. Enable "Developer mode"
+  3. Click "Load unpacked"
+  4. Select the unzipped project folder
+
 
 ## Usage Examples
 
@@ -70,3 +79,4 @@ AI: [tab.read] ✓ Found 5 fields → [tab.fill] ✓ → Ask: Confirm submit? y/
 - **Model size**: 13MB `.cact` + 307KB WASM engine
 - **Memory usage**: ~28MB runtime
 - **UI**: Vanilla JS + CSS Custom Properties (light theme)
+

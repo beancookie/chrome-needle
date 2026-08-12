@@ -21,6 +21,8 @@ Download: [chrome-needle.zip](https://github.com/beancookie/chrome-needle/releas
 
 ## Usage Examples
 
+![ChromeNeedle in action](images/demo1.png)
+
 **Basic navigation**
 ```
 You: Go to google.com and search for AI news

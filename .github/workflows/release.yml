@@ -1,0 +1,39 @@
+name: Package Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set version from tag
+        id: ver
+        run: echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Bump manifest version to match tag
+        run: |
+          sed -i "s/\"version\": \"[^\"]*\"/\"version\": \"${{ steps.ver.outputs.version }}\"/" manifest.json
+
+      - name: Build ZIP (forward-slash entries)
+        run: |
+          zip -r chrome-needle.zip manifest.json background.js content.js \
+            popup.html popup.js sidepanel.html css icons js lib
+
+      - name: Verify ZIP (manifest at root, no backslashes)
+        run: |
+          unzip -l chrome-needle.zip | grep "manifest.json"
+          ! unzip -l chrome-needle.zip | grep -q "\\\\"
+
+      - name: Create release + upload
+        uses: softprops/action-gh-release@v2
+        with:
+          files: chrome-needle.zip
+          generate_release_notes: true

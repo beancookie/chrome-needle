@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Needle 2 - AI Agent</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="app-header">
+      <div class="header-left">
+        <span class="logo">Needle 2</span>
+        <span class="badge">45M</span>
+        <span id="status-dot" class="status-dot offline" title="Model status"></span>
+      </div>
+      <nav class="header-nav">
+        <button id="tab-chat" class="tab-btn active">Chat</button>
+        <button id="tab-tools" class="tab-btn">Tools</button>
+        <button id="tab-settings" class="tab-btn">Settings</button>
+      </nav>
+    </header>
+
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+      <div class="loading-spinner"></div>
+      <div id="loading-text">Initializing Needle 2...</div>
+      <div id="loading-progress" class="loading-progress">
+        <div id="loading-bar" class="loading-bar"></div>
+      </div>
+    </div>
+
+    <!-- Chat Tab -->
+    <div id="panel-chat" class="panel">
+      <div id="chat-messages" class="chat-messages">
+        <div class="welcome-msg">
+          <div class="welcome-icon">N</div>
+          <h3>Needle 2 Agent</h3>
+          <p>45M params, runs locally in your browser. I can control your tabs, fill forms, run scripts, and more.</p>
+          <div class="welcome-hints">
+            <span class="hint" data-prompt="Go to google.com and search for AI news">"Go to google.com and search for AI news"</span>
+            <span class="hint" data-prompt="Get the content of this page and summarize it">"Summarize this page"</span>
+            <span class="hint" data-prompt="告诉我当前页面内容是什么">"告诉我当前页面内容是什么"</span>
+            <span class="hint" data-prompt="Open youtube.com in a new tab">"Open youtube.com in a new tab"</span>
+          </div>
+        </div>
+      </div>
+      <div class="chat-input-area">
+        <textarea
+          id="chat-input"
+          rows="1"
+          placeholder="Ask the agent to do something..."
+          autofocus
+        ></textarea>
+        <button id="btn-send" title="Send">Send</button>
+      </div>
+    </div>
+
+    <!-- Tools Tab -->
+    <div id="panel-tools" class="panel hidden">
+      <div id="tools-editor-container">
+        <div id="builtin-tools-list" class="builtin-tools-list">
+          <h4>Built-in Tools (16)</h4>
+          <div id="builtin-tool-items"></div>
+        </div>
+        <div id="custom-tools-container"></div>
+      </div>
+    </div>
+
+    <!-- Settings Tab -->
+    <div id="panel-settings" class="panel hidden">
+      <div class="settings-form">
+        <h4>Settings</h4>
+        <label>
+          <span>Auto-translate Chinese to English</span>
+          <input type="checkbox" id="setting-auto-translate" checked />
+        </label>
+        <label>
+          <span>Max tool-calling steps</span>
+          <input type="number" id="setting-max-steps" value="8" min="1" max="20" />
+        </label>
+        <button id="btn-reset-conversation" class="btn-secondary">Reset Conversation</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="lib/needle.js"></script>
+  <script src="js/sidepanel.js" type="module"></script>
+</body>
+</html>

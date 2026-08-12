@@ -1,0 +1,48 @@
+[
+  {
+    "name": "get_weather",
+    "description": "Get the current weather for a city.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "city": { "type": "string", "description": "name of the city" }
+      },
+      "required": ["city"]
+    }
+  },
+  {
+    "name": "send_message",
+    "description": "Send a text message to a contact.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "to": { "type": "string", "description": "recipient name or phone number" },
+        "body": { "type": "string", "description": "message content" }
+      },
+      "required": ["to", "body"]
+    }
+  },
+  {
+    "name": "search_web",
+    "description": "Search the web for information.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "query": { "type": "string", "description": "search query" }
+      },
+      "required": ["query"]
+    }
+  },
+  {
+    "name": "set_reminder",
+    "description": "Set a reminder for later.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "text": { "type": "string", "description": "what to be reminded about" },
+        "when": { "type": "string", "description": "when to trigger the reminder" }
+      },
+      "required": ["text", "when"]
+    }
+  }
+]

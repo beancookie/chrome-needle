@@ -79,4 +79,5 @@ AI: [tab.read] ✓ Found 5 fields → [tab.fill] ✓ → Ask: Confirm submit? y/
 - **Model size**: 13MB `.cact` + 307KB WASM engine
 - **Memory usage**: ~28MB runtime
 - **UI**: Vanilla JS + CSS Custom Properties (light theme)
-
+- 
+This project actively supports and acknowledges the [LINUX DO](https://linux.do) community, a welcoming space for tech enthusiasts.

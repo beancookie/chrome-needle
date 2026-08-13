@@ -6,6 +6,7 @@ export function hasChinese(text) {
 }
 
 export async function translateZhToEn(text) {
+  console.log("[Translator] translating:", text);
   try {
     const resp = await fetch(ICIBA_URL, {
       method: "POST",
@@ -16,19 +17,28 @@ export async function translateZhToEn(text) {
       body: JSON.stringify({ from: "zh", to: "en", textList: [text] }),
     });
     const data = await resp.json();
+    console.log("[Translator] resp status:", resp.status, "code:", data.code);
     if (data.code === 1 && data.data?.length > 0) {
+      console.log("[Translator] translated:", data.data[0].out);
       return data.data[0].out;
     }
+    console.warn("[Translator] no translation, code:", data.code);
     return null;
-  } catch {
+  } catch (e) {
+    console.error("[Translator] fetch failed:", e);
     return null;
   }
 }
 
 export async function maybeTranslate(text) {
   if (hasChinese(text)) {
+    console.log("[Translator] hasChinese=true, translating:", text);
     const translated = await translateZhToEn(text);
-    if (translated) return { text: translated, original: text };
+    if (translated) {
+      console.log("[Translator] translated:", text, "->", translated);
+      return { text: translated, original: text };
+    }
   }
+  console.log("[Translator] skip translation");
   return { text, original: null };
 }

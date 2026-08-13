@@ -174,7 +174,13 @@ async function handleMessage(msg) {
       const dataUrl = await chrome.tabs.captureVisibleTab(tab.windowId, {
         format: "png",
       });
-      return { screenshot: dataUrl.slice(0, 100) + "..." };
+      const filename = `screenshot-${Date.now()}.png`;
+      const id = await chrome.downloads.download({
+        url: dataUrl,
+        filename,
+        saveAs: true,
+      });
+      return { saved: true, filename, downloadId: id };
     }
     case "notification": {
       chrome.notifications.create({

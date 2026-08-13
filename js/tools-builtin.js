@@ -47,6 +47,12 @@ const BUILTIN_TOOL_SCHEMAS = [
     description: "List all currently open browser tabs with their IDs, titles, and URLs.",
     parameters: { type: "object", properties: {}, required: [] },
   },
+  {
+    name: "take_screenshot",
+    description:
+      "Take a screenshot of the current page and save it as a PNG file to the Downloads folder. Use this when the user asks to take a screenshot, capture the page, or save an image of the page.",
+    parameters: { type: "object", properties: {}, required: [] },
+  },
 ];
 
 export async function executeTool(name, args) {

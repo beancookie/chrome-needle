@@ -30,3 +30,8 @@ ChromeNeedle — Chrome MV3 extension that runs a local LLM (Needle 2) in WASM i
 - Load `chrome://extensions` → "Load unpacked" → select repo root
 - Errors surface via the side panel's `window.onerror` handler + browser console
 - All `console.log` logging is intentional debugging output — keep it or improve it, but don't strip blindly
+
+## Releases
+- After committing a change, automatically create and push a semantic-version tag (patch/minor — confirm the version with the user)
+- `git tag -a vX.Y.Z -m "<message>"` then `git push origin vX.Y.Z`
+- GitHub Actions (`release.yml`) auto-builds and publishes the release on any `v*` tag push — no manual release step needed
